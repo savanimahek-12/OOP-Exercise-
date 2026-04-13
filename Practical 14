@@ -1,0 +1,72 @@
+class BankAccount {
+    protected String accountNumber;
+    protected String accountHolderName;
+    protected double balance;
+
+    public void openAccount(String accNo, String name, double initialBalance) {
+        accountNumber = accNo;
+        accountHolderName = name;
+        balance = initialBalance;
+    }
+
+    public void deposit(double amount) {
+        balance += amount;
+        System.out.println("Deposited: " + amount);
+    }
+
+    public void withdraw(double amount) {
+        if (amount <= balance) {
+            balance -= amount;
+            System.out.println("Withdrawn: " + amount);
+        } else {
+            System.out.println("Insufficient balance");
+        }
+    }
+
+    public void checkBalance() {
+        System.out.println("Account Number: " + accountNumber);
+        System.out.println("Account Holder: " + accountHolderName);
+        System.out.println("Balance: " + balance);
+    }
+}
+
+class SavingAccount extends BankAccount {
+    private double interestRate = 4.0;
+
+    public double calculateInterest() {
+        return (balance * interestRate) / 100;
+    }
+}
+
+class FixedDepositAccount extends BankAccount {
+    private double interestRate = 6.5;
+    private int years;
+
+    public void setYears(int years) {
+        this.years = years;
+    }
+
+    public double maturityAmount() {
+        return balance + (balance * interestRate * years) / 100;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+
+        SavingAccount sa = new SavingAccount();
+        sa.openAccount("SA101", "Alice", 10000);
+        sa.deposit(2000);
+        sa.withdraw(1500);
+        sa.checkBalance();
+        System.out.println("Interest (Saving Account): " + sa.calculateInterest());
+
+        System.out.println();
+
+        FixedDepositAccount fd = new FixedDepositAccount();
+        fd.openAccount("FD201", "Bob", 20000);
+        fd.setYears(3);
+        fd.checkBalance();
+        System.out.println("Maturity Amount (FD): " + fd.maturityAmount());
+    }
+}
